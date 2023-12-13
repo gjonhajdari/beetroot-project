@@ -9,6 +9,7 @@ const User = require("../../models/User");
 const keys = require("../../config/keys");
 
 const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
 
 // Get request handler for the './test' endpoint
 router.get("/test", (req, res) => {
@@ -60,6 +61,12 @@ router.post("/register", (req, res) => {
 
 // POST request handler for the './login' endpoint
 router.post("/login", (req, res) => {
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const email = req.body.email;
   const password = req.body.password;
 
