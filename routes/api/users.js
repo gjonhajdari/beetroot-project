@@ -8,6 +8,8 @@ const passport = require("passport");
 const User = require("../../models/User");
 const keys = require("../../config/keys");
 
+const validateRegisterInput = require("../../validation/register");
+
 // Get request handler for the './test' endpoint
 router.get("/test", (req, res) => {
   res.json({
@@ -17,6 +19,12 @@ router.get("/test", (req, res) => {
 
 // POST request handler for the './request' endpoint
 router.post("/register", (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   User.findOne({ email: req.body.email }).then((user) => {
     if (user) {
       return res.status(400).json({
