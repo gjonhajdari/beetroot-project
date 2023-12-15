@@ -113,4 +113,17 @@ router.get("/user/:userID", (req, res) => {
     );
 });
 
+router.get("/all", (req, res) => {
+  const errors = {};
+
+  Profile.find()
+    .populate("user", ["name", "avatar"])
+    .then((profiles) => res.json(profiles))
+    .catch((error) =>
+      res.status(404).json({
+        profiles: "No profiles found",
+      })
+    );
+});
+
 module.exports = router;
