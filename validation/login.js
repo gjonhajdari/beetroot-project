@@ -13,12 +13,12 @@ module.exports = function validateLoginInput(data) {
   }
 
   if (validator.isEmpty(data.email)) {
-    errors.email = "Email field cannot be empty";
+    errors.email = "Email field is required";
   }
 
   // Password
   if (validator.isEmpty(data.password)) {
-    errors.password = "Password field cannot be empty";
+    errors.password = "Password field is required";
   }
 
   return {
