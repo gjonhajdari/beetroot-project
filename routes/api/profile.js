@@ -91,16 +91,10 @@ router.get("/handle/:handle", (req, res) => {
 
   Profile.findOne({ handle: req.params.handle })
     .populate("user", ["name", "avatar"])
-    .then((profile) => {
-      if (!profile) {
-        errors.profile = "Profile not found";
-        return res.status(404).json(errors);
-      }
-      res.json(profile);
-    })
+    .then((profile) => res.json(profile))
     .catch((error) =>
       res.status(404).json({
-        profile: "Failed to get user profile",
+        profile: "Profile not found",
       })
     );
 });
@@ -111,16 +105,10 @@ router.get("/user/:userID", (req, res) => {
 
   Profile.findOne({ user: req.params.userID })
     .populate("user", ["name", "avatar"])
-    .then((user) => {
-      if (!user) {
-        errors.user = "User not found";
-        return res.status(404).json(errors);
-      }
-      res.json(user);
-    })
+    .then((user) => res.json(user))
     .catch((error) =>
       res.status(404).json({
-        user: "Failed to get user profile",
+        user: "User not found",
       })
     );
 });
