@@ -30,7 +30,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
     .catch((error) => res.status(404).json(error));
 });
 
-// Endpoint for creating profile
+// Endpoint for creating and updating profile
 router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => {
   const { isValid, errors } = validateProfileInput(req.body);
   if (!isValid) {
