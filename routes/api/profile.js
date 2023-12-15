@@ -6,6 +6,8 @@ const passport = require("passport");
 const User = require("../../models/User");
 const Profile = require("../../models/Profile");
 
+const validateProfileInput = require("../../validation/profile");
+
 router.get("/test", (req, res) => {
   res.json({
     msg: "Profile works!",
@@ -30,8 +32,12 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
 
 // Endpoint for creating profile
 router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => {
+  const { isValid, errors } = validateProfileInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const profileFields = {};
-  const errors = {};
 
   profileFields.user = req.user.id;
 
@@ -70,11 +76,10 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
         // Check if it handle already exists
         if (profile) {
           errors.handle = "Handle already exists";
-          res.status(400).json(errors);
-        } else {
-          // Create the new profile
-          new Profile(profileFields).save().then((profile) => res.json(profile));
+          return res.status(400).json(errors);
         }
+        // Create the new profile
+        new Profile(profileFields).save().then((profile) => res.json(profile));
       });
     }
   });
