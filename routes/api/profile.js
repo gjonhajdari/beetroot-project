@@ -85,4 +85,20 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
   });
 });
 
+// Endpoint for getting profile from handle
+router.get("/handle/:handle", (req, res) => {
+  const errors = {};
+
+  Profile.findOne({ handle: req.params.handle })
+    .populate("user", ["name", "avatar"])
+    .then((profile) => {
+      if (!profile) {
+        errors.profile = "Profile not found";
+        return res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch((error) => res.status(404).json(error));
+});
+
 module.exports = router;
