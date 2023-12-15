@@ -31,6 +31,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
 // Endpoint for creating profile
 router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => {
   const profileFields = {};
+  const errors = {};
 
   profileFields.user = req.user.id;
 
@@ -65,14 +66,15 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
       ).then((profile) => res.json(profile));
     } else {
       // Create the profile if it doesn't exist
-      Profile.findOne({ profile: profileFields.handle }).then((profile) => {
+      Profile.findOne({ handle: profileFields.handle }).then((profile) => {
         // Check if it handle already exists
         if (profile) {
           errors.handle = "Handle already exists";
           res.status(400).json(errors);
+        } else {
+          // Create the new profile
+          new Profile(profileFields).save().then((profile) => res.json(profile));
         }
-        // Create the new profile
-        new Profile(profileFields).save().then((profile) => res.json(profile));
       });
     }
   });
