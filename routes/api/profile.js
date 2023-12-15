@@ -98,7 +98,11 @@ router.get("/handle/:handle", (req, res) => {
       }
       res.json(profile);
     })
-    .catch((error) => res.status(404).json(error));
+    .catch((error) =>
+      res.status(404).json({
+        profile: "Failed to get user profile",
+      })
+    );
 });
 
 // Endpoint for getting profile from userID
@@ -114,7 +118,11 @@ router.get("/user/:userID", (req, res) => {
       }
       res.json(user);
     })
-    .catch((error) => res.status(404).json(error));
+    .catch((error) =>
+      res.status(404).json({
+        user: "Failed to get user profile",
+      })
+    );
 });
 
 module.exports = router;
