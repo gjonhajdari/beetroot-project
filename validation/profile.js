@@ -29,37 +29,37 @@ module.exports = function validateProfileInput(data) {
 
   // Social
   if (!isEmpty(data.website)) {
-    if (!validator.isUrl(data.website)) {
+    if (!validator.isURL(data.website)) {
       errors.website = "Please enter a valid URL";
     }
   }
 
   if (!isEmpty(data.twitter)) {
-    if (!validator.isUrl(data.twitter)) {
+    if (!validator.isURL(data.twitter)) {
       errors.twitter = "Please enter a valid URL";
     }
   }
 
   if (!isEmpty(data.youtube)) {
-    if (!validator.isUrl(data.youtube)) {
+    if (!validator.isURL(data.youtube)) {
       errors.youtube = "Please enter a valid URL";
     }
   }
 
   if (!isEmpty(data.facebook)) {
-    if (!validator.isUrl(data.facebook)) {
+    if (!validator.isURL(data.facebook)) {
       errors.facebook = "Please enter a valid URL";
     }
   }
 
   if (!isEmpty(data.linkedin)) {
-    if (!validator.isUrl(data.linkedin)) {
+    if (!validator.isURL(data.linkedin)) {
       errors.linkedin = "Please enter a valid URL";
     }
   }
 
   if (!isEmpty(data.instagram)) {
-    if (!validator.isUrl(data.instagram)) {
+    if (!validator.isURL(data.instagram)) {
       errors.instagram = "Please enter a valid URL";
     }
   }
