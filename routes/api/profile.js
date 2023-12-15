@@ -101,4 +101,20 @@ router.get("/handle/:handle", (req, res) => {
     .catch((error) => res.status(404).json(error));
 });
 
+// Endpoint for getting profile from userID
+router.get("/user/:userID", (req, res) => {
+  const errors = {};
+
+  Profile.findOne({ user: req.params.userID })
+    .populate("user", ["name", "avatar"])
+    .then((user) => {
+      if (!user) {
+        errors.user = "User not found";
+        return res.status(404).json(errors);
+      }
+      res.json(user);
+    })
+    .catch((error) => res.status(404).json(error));
+});
+
 module.exports = router;
