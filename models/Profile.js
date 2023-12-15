@@ -109,6 +109,9 @@ const profileSchema = new Schema({
     youtube: {
       type: String,
     },
+    linkedin: {
+      type: String,
+    },
   },
   date: {
     type: Date,
