@@ -8,6 +8,7 @@ const Profile = require("../../models/Profile");
 
 const validateProfileInput = require("../../validation/profile");
 const validateExperienceInput = require("../../validation/experience");
+const validateEducationInput = require("../../validation/education");
 
 router.get("/test", (req, res) => {
   res.json({
@@ -141,8 +142,6 @@ router.post(
 
     const experienceFields = {};
 
-    experienceFields.user = req.user.id;
-
     if (req.body.title) experienceFields.title = req.body.title;
     if (req.body.company) experienceFields.company = req.body.company;
     if (req.body.location) experienceFields.location = req.body.location;
@@ -172,8 +171,54 @@ router.post(
         }
       })
       .catch((error) => {
-        errors.profile = "Error updating profile";
-        res.status(500).json(errors);
+        res.status(500).json(error);
+      });
+  }
+);
+
+// Endpoint for adding education to profiles
+router.post(
+  "/education",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateEducationInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    const educationFields = {};
+
+    if (req.body.school) educationFields.school = req.body.school;
+    if (req.body.degree) educationFields.degree = req.body.degree;
+    if (req.body.fieldofstudy) educationFields.fieldofstudy = req.body.fieldofstudy;
+    if (req.body.from) educationFields.from = req.body.from;
+    if (req.body.to) educationFields.to = req.body.to;
+    if (req.body.current) educationFields.current = req.body.current;
+    if (req.body.description) educationFields.description = req.body.description;
+
+    Profile.findOneAndUpdate(
+      { user: req.user.id },
+      {
+        $push: {
+          education: {
+            $each: [educationFields],
+            $position: 0,
+          },
+        },
+      },
+      { new: true }
+    )
+      .then((profile) => {
+        if (profile) {
+          res.json(profile);
+        } else {
+          errors.profile = "Profile not found";
+          res.status(404).json(errors);
+        }
+      })
+      .catch((error) => {
+        res.status(500).json(error);
       });
   }
 );
