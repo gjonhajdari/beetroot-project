@@ -237,7 +237,7 @@ router.delete(
       }
 
       const removeIndex = profile.education
-        .map((ed) => ed.id)
+        .map((edu) => edu.id)
         .indexOf(req.params.educationID);
 
       if (removeIndex === -1) {
@@ -250,6 +250,37 @@ router.delete(
         .save()
         .then((profile) => res.json(profile))
         .catch((error) => res.status(404).json(error));
+    });
+  }
+);
+
+// Endpoint for deleting experience from ID
+router.delete(
+  "/experience/:experienceID",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Profile.findOne({ user: req.user.id }).then((profile) => {
+      if (!profile) {
+        errors.profile = "Profile not found";
+        return res.status(404).json(errors);
+      }
+
+      const removeIndex = profile.experience
+        .map((exp) => exp.id)
+        .indexOf(req.params.experienceID);
+
+      if (removeIndex === -1) {
+        errors.experience = "Experience not found";
+        res.status(404).json(errors);
+      }
+
+      profile.experience.splice(removeIndex, 1);
+      profile
+        .save()
+        .then((profile) => res.json(profile))
+        .catch((error) => res.status(500).json(error));
     });
   }
 );
