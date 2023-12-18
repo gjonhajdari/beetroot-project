@@ -19,12 +19,12 @@ module.exports = function validateExperienceInput(data) {
   }
 
   // Date
-  // if (!validator.isDate(date.from)) {
-  //   errors.from = "Please enter a valid date";
-  // }
+  if (!validator.isDate(data.from)) {
+    errors.from = "Please enter a valid date";
+  }
 
   if (validator.isEmpty(data.from)) {
-    errors.from = "Title field is required";
+    errors.from = "From field is required";
   }
 
   return {
