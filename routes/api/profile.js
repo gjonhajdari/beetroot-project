@@ -151,18 +151,23 @@ router.post(
     if (req.body.current) experienceFields.current = req.body.current;
     if (req.body.description) experienceFields.description = req.body.description;
 
-    Profile.findOne({ user: req.user.id }).then((profile) => {
-      if (profile) {
-        Profile.findOneAndUpdate(
-          { user: req.user.id },
-          { $push: { experience: experienceFields } },
-          { new: true }
-        ).then((profile) => res.json(profile));
-      } else {
-        errors.profile = "Profile not found";
-        res.status(404).json(errors);
-      }
-    });
+    Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $push: { experience: experienceFields } },
+      { new: true }
+    )
+      .then((profile) => {
+        if (profile) {
+          res.json(profile);
+        } else {
+          errors.profile = "Profile not found";
+          res.status(404).json(errors);
+        }
+      })
+      .catch((error) => {
+        errors.profile = "Error updating profile";
+        res.status(500).json(errors);
+      });
   }
 );
 
