@@ -223,4 +223,35 @@ router.post(
   }
 );
 
+// Endpoint for deleting education from ID
+router.delete(
+  "/education/:educationID",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Profile.findOne({ user: req.user.id }).then((profile) => {
+      if (!profile) {
+        errors.profile = "Profile not found";
+        return res.status(404).json(errors);
+      }
+
+      const removeIndex = profile.education
+        .map((ed) => ed.id)
+        .indexOf(req.params.educationID);
+
+      if (removeIndex === -1) {
+        errors.education = "Education not found";
+        res.status(404).json(errors);
+      }
+
+      profile.education.splice(removeIndex, 1);
+      profile
+        .save()
+        .then((profile) => res.json(profile))
+        .catch((error) => res.status(404).json(error));
+    });
+  }
+);
+
 module.exports = router;
