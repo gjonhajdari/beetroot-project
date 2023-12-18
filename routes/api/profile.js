@@ -7,6 +7,7 @@ const User = require("../../models/User");
 const Profile = require("../../models/Profile");
 
 const validateProfileInput = require("../../validation/profile");
+const validateExperienceInput = require("../../validation/experience");
 
 router.get("/test", (req, res) => {
   res.json({
@@ -33,6 +34,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
 // Endpoint for creating and updating profile
 router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => {
   const { isValid, errors } = validateProfileInput(req.body);
+
   if (!isValid) {
     return res.status(400).json(errors);
   }
@@ -125,5 +127,43 @@ router.get("/all", (req, res) => {
       })
     );
 });
+
+// Endpoint for adding experience to profiles
+router.post(
+  "/experience",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { isValid, errors } = validateExperienceInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    const experienceFields = {};
+
+    experienceFields.user = req.user.id;
+
+    if (req.body.title) experienceFields.title = req.body.title;
+    if (req.body.company) experienceFields.company = req.body.company;
+    if (req.body.location) experienceFields.location = req.body.location;
+    if (req.body.from) experienceFields.from = req.body.from;
+    if (req.body.to) experienceFields.to = req.body.to;
+    if (req.body.current) experienceFields.current = req.body.current;
+    if (req.body.description) experienceFields.description = req.body.description;
+
+    Profile.findOne({ user: req.user.id }).then((profile) => {
+      if (profile) {
+        Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $push: { experience: experienceFields } },
+          { new: true }
+        ).then((profile) => res.json(profile));
+      } else {
+        errors.profile = "Profile not found";
+        res.status(404).json(errors);
+      }
+    });
+  }
+);
 
 module.exports = router;
