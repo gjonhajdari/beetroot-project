@@ -153,7 +153,14 @@ router.post(
 
     Profile.findOneAndUpdate(
       { user: req.user.id },
-      { $push: { experience: experienceFields } },
+      {
+        $push: {
+          experience: {
+            $each: [experienceFields],
+            $position: 0,
+          },
+        },
+      },
       { new: true }
     )
       .then((profile) => {
