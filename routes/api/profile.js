@@ -10,12 +10,6 @@ const validateProfileInput = require("../../validation/profile");
 const validateExperienceInput = require("../../validation/experience");
 const validateEducationInput = require("../../validation/education");
 
-router.get("/test", (req, res) => {
-  res.json({
-    msg: "Profile works!",
-  });
-});
-
 // Endpoint for getting profile
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
   const errors = {};

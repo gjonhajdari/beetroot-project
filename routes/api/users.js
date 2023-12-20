@@ -11,13 +11,6 @@ const keys = require("../../config/keys");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 
-// Get request handler for the './test' endpoint
-router.get("/test", (req, res) => {
-  res.json({
-    msg: "Users works!",
-  });
-});
-
 // POST request handler for the './request' endpoint
 router.post("/register", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
