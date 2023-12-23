@@ -1,5 +1,6 @@
+require("dotenv").config();
+
 module.exports = {
-  mongoUri:
-    "mongodb+srv://user_1:Of7eiteHk1SEFSQL@cluster0.mjjdlm4.mongodb.net/beetrootjs",
-  secretOrKey: "secret",
+  mongoUri: process.env.MONGO_URI,
+  secretOrKey: process.env.SECRET_OR_KEY,
 };
