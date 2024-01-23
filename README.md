@@ -1,6 +1,6 @@
 # Beetroot Project
 
-Full-Stack web application build with React and Express. Project was made during the traning program for Node.js Backend Development by [Beetroot Academy](https://xk.beetroot.academy/).
+Full-Stack web app build during a training program focused on Node.js Back End Development by [Beetroot Academy](https://xk.beetroot.academy/). Features a REST API build with Express.js, including user authentication using JSON Web Tokens (JWT). The corresponding Front-End, provided by the training instructor, interacts with and utilizes this API.
 
 ## Getting started
 
