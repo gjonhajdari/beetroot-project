@@ -37,13 +37,20 @@ $ yarn install
 
 ## Starting up
 
-Development server for the font-end
+Create a `.env` file containing your MongoDB URI and your JWT secret as specified in `.env.example`.
+
+```
+MONGO_URI=mongodb+srv://user_1:<password>@<cluster>.mongodb.net/
+SECRET_OR_KEY=your_value
+```
+
+Starting the development server for the font-end
 
 ```bash
 $ yarn run start
 ```
 
-Development server for the back-end (in a new terminal instance)
+Starting the development server for the back-end (in a new terminal instance)
 
 ```bash
 $ npm run server
